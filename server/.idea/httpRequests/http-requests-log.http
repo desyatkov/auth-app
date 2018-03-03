@@ -1,0 +1,18 @@
+POST http://localhost:3090/signup?email=test@example.com&oassword=123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2018-03-02T115621.200.json
+
+###
+
+POST http://localhost:3090/signup
+Accept: */*
+Cache-Control: no-cache
+
+{ 	"email": "test@example.com", 	"password": "123" }
+
+<> 2018-03-02T115456.200.json
+
+###
+
