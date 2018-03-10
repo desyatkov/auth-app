@@ -3,7 +3,8 @@ import { browserHistory } from 'react-router';
 import {
   AUTH_USER,
   UNAUTH_USER,
-  AUTH_ERROR
+  AUTH_ERROR,
+  FETCH_MESSAGE
 } from './types';
 
 const API_URL = 'http://localhost:3090';
@@ -13,8 +14,7 @@ export function signinUser({ email, password }) {
     // submit email password to server
     axios.post(`${API_URL}/signin`, { email, password })
       .then( response => {
-        // if request is good
-        // - update state
+        // if request is good update state
         dispatch({type: AUTH_USER});
         // - save JWT token
         localStorage.setItem('token', response.data.token);
@@ -22,8 +22,7 @@ export function signinUser({ email, password }) {
         browserHistory.push('/feature');
       })
       .catch(() => {
-        // - if request is bad
-        // - show error
+        // - if request is bad show error
         dispatch(authError('Bad login info'));
       })
   }
@@ -55,4 +54,18 @@ export function signoutUser() {
   localStorage.removeItem('token');
 
   return { type: UNAUTH_USER };
+}
+
+export function fetchMessage() {
+  return function (dispatch) {
+    axios.get(API_URL,  {
+      headers: {authorization: localStorage.getItem('token')}
+    })
+    .then( response => {
+      dispatch({
+       type: FETCH_MESSAGE,
+       payload: response.data.message
+     })
+    })
+  }
 }
